@@ -1,7 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddCarter();
+//builder.Services.AddCarterWithAssemblies(typeof(Program).Assembly);
+builder.Services.AddCarter(
+ new DependencyContextAssemblyCatalog(assemblies: typeof(Program).Assembly)
+);
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssemblies(typeof(Program).Assembly);
