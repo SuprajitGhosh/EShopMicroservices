@@ -1,17 +1,17 @@
-using FluentValidation;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 //builder.Services.AddCarterWithAssemblies(typeof(Program).Assembly);
+var assembly = typeof(Program).Assembly;
 builder.Services.AddCarter(
- new DependencyContextAssemblyCatalog(assemblies: typeof(Program).Assembly)
+ new DependencyContextAssemblyCatalog(assemblies: assembly)
 );
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehaviours<,>));
 });
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddMarten(options => {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
