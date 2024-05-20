@@ -9,7 +9,12 @@ builder.Services.AddCarter(
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
-    config.AddOpenBehavior(typeof(ValidationBehaviours<,>));
+
+    // check IValidator from FluentValidation. How it is linked to AbstractValidator in ValidationBehaviour of BuildingBlocks
+    // check IPipelineBehavior from Mediatr. how it is linked to ICommandHandler in ValidationBehaviour of BuildingBlocks
+    // check what is AddOpenBehavior
+    // check next property and method in ValidationBehaviour of BuildingBlocks
+    config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
 });
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddMarten(options => {

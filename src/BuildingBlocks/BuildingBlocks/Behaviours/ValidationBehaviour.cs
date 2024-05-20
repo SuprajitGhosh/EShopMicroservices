@@ -4,7 +4,11 @@ using MediatR;
 
 namespace BuildingBlocks.Behaviours
 {
-    public class ValidationBehaviours<TRequest, TResponse>(IEnumerable<IValidator<ICommand>> validators) : IPipelineBehavior<TRequest, TResponse> where TRequest: ICommand<TResponse>
+    // check IValidator from FluentValidation. How it is linked to AbstractValidator
+    // check IPipelineBehavior from Mediatr. how it is linked to ICommandHandler
+    // check what is AddOpenBehavior in Catalog.API program.cs
+    // check next property and method.
+    public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse> where TRequest: ICommand<TResponse>
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
