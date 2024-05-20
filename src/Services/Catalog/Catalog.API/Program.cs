@@ -1,3 +1,5 @@
+using BuildingBlocks.Behaviours;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -15,6 +17,7 @@ builder.Services.AddMediatR(config =>
     // check what is AddOpenBehavior
     // check next property and method in ValidationBehaviour of BuildingBlocks
     config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+    config.AddOpenBehavior(typeof(LoggingBehaviour<,>));
 });
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddMarten(options => {
