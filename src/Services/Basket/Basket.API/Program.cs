@@ -1,6 +1,12 @@
+using Carter;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Services 
+var assembly = typeof(Program).Assembly;
+builder.Services.AddCarter(
+ new DependencyContextAssemblyCatalog(assemblies: assembly)
+);
 
 var app = builder.Build();
 
