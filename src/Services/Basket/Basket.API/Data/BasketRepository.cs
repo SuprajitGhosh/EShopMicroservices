@@ -1,21 +1,25 @@
-﻿
-namespace Basket.API.Data
+﻿namespace Basket.API.Data
 {
-    public class BasketRepository : IBasketRepository
+    public class BasketRepository( IDocumentSession session) : IBasketRepository
     {
-        public Task<bool> DeleteBasket(string userName, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<ShoppingCart> GetBasket(string userName, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var basket = session.LoadAsync<ShoppingCart>(userName, cancellationToken);
+            return basket is null ? throw new BasketNotFoundException(userName) : basket;
         }
 
-        public Task<ShoppingCart> StoreBasket(ShoppingCart basket, CancellationToken cancellationToken = default)
+        public async Task<ShoppingCart> StoreBasket(ShoppingCart basket, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            session.Store(basket);
+            await session.SaveChangesAsync(cancellationToken);
+            return basket;
         }
+        public async Task<bool> DeleteBasket(string userName, CancellationToken cancellationToken = default)
+        {
+            session.Delete<ShoppingCart>(userName);
+            await session.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+
     }
 }
